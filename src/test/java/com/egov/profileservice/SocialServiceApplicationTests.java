@@ -1,4 +1,4 @@
-package com.egov.matchservice;
+package com.egov.profileservice;
 
 import org.springframework.boot.test.context.SpringBootTest;
 
