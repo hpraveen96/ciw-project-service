@@ -1,4 +1,4 @@
-package com.egov.profileservice;
+package com.egov.projectservice;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -7,14 +7,16 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 @Getter
 @Setter
-@Document(collection = "profiles")
-public class Profile {
+@Document(collection = "projects")
+public class Project {
 
     @Id
+    String id;
     String phone;
-    String firstName;
-    String lastName;
-    String email;
+    String name;
+    String description;
     String location;
-    String aadhar;
+    String startDate;
+    String status;
+    double budget;
 }
