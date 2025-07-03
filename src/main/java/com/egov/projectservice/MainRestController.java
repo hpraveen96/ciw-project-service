@@ -17,11 +17,14 @@ public class MainRestController {
     @Autowired
     TokenService tokenService;
 
+    @Autowired
+    QuoteRepository quoteRepository;
+
     @PostMapping("float/project")
     public ResponseEntity<String> addProfile(@RequestHeader("Authorization") String token,
                                              @RequestBody Project project) {
         logger.info("Received parameter for profile"+ project.toString());
-        String phone;
+        String phone="";
         try {
             phone = tokenService.validateToken(token);
         }catch(WebClientResponseException e){
@@ -36,7 +39,25 @@ public class MainRestController {
 
         return ResponseEntity.status(401).body("Invalid Phone Number");
 
+    }
 
+    @PostMapping("raise/quote")
+    public ResponseEntity<String> addQuote(@RequestHeader("Authorization") String token,
+                                           @RequestBody Quote quote){
+        logger.info("Received parameter for quote"+ quote.toString());
+        String phone = "";
+        try {
+            phone = tokenService.validateToken(token);
+        }catch(WebClientResponseException e){
+            logger.info("Token validation failed: " + e.getMessage());
+        }
 
+        if(phone.equals(quote.getContractorId())){
+            logger.info("Contractor Matched, Saving Quote details");
+            Quote savedQuote =  quoteRepository.save(quote);
+            return ResponseEntity.ok("Quote added Successfully with Quote id "+savedQuote.getId());
+        }
+
+        return ResponseEntity.status(401).body("Invalid Contractor Id");
     }
 }
